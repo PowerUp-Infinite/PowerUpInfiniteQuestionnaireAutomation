@@ -348,41 +348,17 @@ CUSTOM_CSS = """
     /* Radio spacing */
     div[data-baseweb="radio"] > div { gap: 0.2rem; }
 
-    /* ── Portfolio Preference Table ── */
-    .port-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0.6rem 0 1rem 0;
-        font-size: 0.875rem;
-    }
-    .port-table thead tr {
-        border-bottom: 2px solid #dbeafe;
-    }
-    .port-table th {
-        text-align: left;
-        padding: 0.35rem 0.6rem;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .port-table td {
-        padding: 0.5rem 0.6rem;
-        border-bottom: 1px solid #f1f5f9;
-        vertical-align: middle;
-    }
-    .port-table tbody tr:last-child td { border-bottom: none; }
-    .pt-name {
-        font-weight: 600;
+    /* ── Portfolio Preference List ── */
+    .port-list { margin: 0.5rem 0 1rem 0; }
+    .port-item {
+        margin: 0.4rem 0;
+        font-size: 0.88rem;
+        line-height: 1.5;
         color: #1a1a2e;
     }
-    .pt-return {
-        font-weight: 700;
-        color: #1a56db;
-    }
-    .neg-val { color: #dc2626; font-weight: 700; }
-    .pos-val { color: #16a34a; font-weight: 700; }
+    .pt-return { font-weight: 600; color: #1a56db; }
+    .neg-val   { color: #dc2626; font-weight: 700; }
+    .pos-val   { color: #16a34a; font-weight: 700; }
     .risk-vlow-text { color: #14532d; }
     .risk-low-text  { color: #713f12; }
     .risk-mod-text  { color: #7c2d12; }
