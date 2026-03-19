@@ -15,6 +15,7 @@ from config import (
     INCOME_DESCRIPTIONS,
     LIABILITY_OPTIONS, FORESEE_LIABILITY_OPTIONS, MANAGE_LIABILITY_OPTIONS,
     EMERGENCY_FUND_OPTIONS, PORTFOLIO_PREFERENCE_OPTIONS,
+    PORTFOLIO_SHORT_LABELS, PORTFOLIO_CARDS,
     INVESTMENT_HORIZON_OPTIONS, FALL_REACTION_OPTIONS,
     GOAL_MODULE_MAP, GOALS_WITHOUT_MODULE,
 )
@@ -159,20 +160,21 @@ def _go_to(step: int):
 
 def _nav_buttons(step_key: str, on_next=None, prev=True):
     """
-    Render Previous / Next buttons.
+    Render Next / Previous buttons.
+    Next is in col1 (left / top on mobile) so it's always the prominent action.
     on_next: callback returning True if validation passes (and saving state).
     If on_next is None, just advance.
     """
     col1, col2 = st.columns([1, 1])
     with col1:
-        if prev:
-            if st.button("← Previous", use_container_width=True, key=f"btn_prev_{step_key}"):
-                _go_prev()
-                st.rerun()
-    with col2:
         if st.button("Next →", use_container_width=True, key=f"btn_next_{step_key}"):
             if on_next is None or on_next():
                 _go_next()
+                st.rerun()
+    with col2:
+        if prev:
+            if st.button("← Previous", use_container_width=True, key=f"btn_prev_{step_key}"):
+                _go_prev()
                 st.rerun()
 
 
@@ -191,7 +193,7 @@ def _render_header():
     logo_b64 = _load_logo_b64()
     st.markdown(
         f'<div class="logo-header">'
-        f'<img src="data:image/jpeg;base64,{logo_b64}" alt="PowerUp Infinite">'
+        f'<img src="data:image/png;base64,{logo_b64}" alt="PowerUp Infinite">'
         f'</div>'
         f'<div class="logo-subtitle">Infinite Questionnaire</div>',
         unsafe_allow_html=True,
@@ -393,6 +395,29 @@ def _step_liabilities():
 
 
 # ── Step 6: Risk Appetite (Emergency Fund + Portfolio Preference) ────────────
+def _build_portfolio_cards_html() -> str:
+    """Build the visual portfolio card grid HTML."""
+    cards_html = '<div class="port-grid">'
+    for card in PORTFOLIO_CARDS:
+        cards_html += f"""
+        <div class="port-card">
+            <div class="port-card-header">
+                <span class="port-icon">{card["icon"]}</span>
+                <span class="port-title">{card["title"]}</span>
+            </div>
+            <div class="port-desc">{card["description"]}</div>
+            <div><span class="port-risk {card["risk_class"]}">{card["risk"]}</span></div>
+            <div class="port-return">{card["return_pa"]}</div>
+            <div class="port-range-label">Range of outcomes</div>
+            <div class="port-range">
+                <span class="neg-val">▼ Worst &nbsp;{card["worst"]}</span>
+                <span class="pos-val">▲ Best &nbsp;{card["best"]}</span>
+            </div>
+        </div>"""
+    cards_html += "</div>"
+    return cards_html
+
+
 def _step_risk_appetite():
     ss = st.session_state
 
@@ -406,11 +431,24 @@ def _step_risk_appetite():
     )
 
     st.divider()
+    st.markdown("**How would you like your portfolio to grow?**")
 
-    pp_idx = PORTFOLIO_PREFERENCE_OPTIONS.index(ss.portfolio_preference) if ss.portfolio_preference in PORTFOLIO_PREFERENCE_OPTIONS else None
-    portfolio_pref = st.radio(
-        "How would you like your portfolio to grow?",
-        PORTFOLIO_PREFERENCE_OPTIONS, index=pp_idx, key="inp_pp",
+    # Visual reference cards
+    st.markdown(_build_portfolio_cards_html(), unsafe_allow_html=True)
+
+    # Map current stored preference → short label index
+    cur_pref = ss.portfolio_preference
+    if cur_pref in PORTFOLIO_PREFERENCE_OPTIONS:
+        short_idx = PORTFOLIO_PREFERENCE_OPTIONS.index(cur_pref)
+    else:
+        short_idx = None
+
+    chosen_short = st.radio(
+        "Select your preference",
+        PORTFOLIO_SHORT_LABELS,
+        index=short_idx,
+        key="inp_pp",
+        label_visibility="collapsed",
     )
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -419,11 +457,13 @@ def _step_risk_appetite():
         if emergency_fund is None:
             st.error("Please select how many months of emergency fund you maintain.")
             return False
-        if portfolio_pref is None:
+        if chosen_short is None:
             st.error("Please select your portfolio growth preference.")
             return False
         ss.emergency_fund = emergency_fund
-        ss.portfolio_preference = portfolio_pref
+        # Store the full option string (for Sheets) by mapping from short label
+        idx = PORTFOLIO_SHORT_LABELS.index(chosen_short)
+        ss.portfolio_preference = PORTFOLIO_PREFERENCE_OPTIONS[idx]
         return True
 
     _nav_buttons("6", on_next=_validate)
@@ -475,28 +515,40 @@ def _step_investment_details():
 
     lumpsum = st.number_input(
         "Lumpsum investment amount (Rs.)",
-        min_value=0, value=int(ss.lumpsum_amount), step=10000, key="inp_lumpsum",
+        min_value=0,
+        value=None if int(ss.lumpsum_amount) == 0 else int(ss.lumpsum_amount),
+        placeholder="Enter amount",
+        step=10000, key="inp_lumpsum",
     )
     sip = st.number_input(
         "Monthly SIP amount (Rs.)",
-        min_value=0, value=int(ss.sip_amount), step=1000, key="inp_sip",
+        min_value=0,
+        value=None if int(ss.sip_amount) == 0 else int(ss.sip_amount),
+        placeholder="Enter amount",
+        step=1000, key="inp_sip",
     )
     sip_age = st.number_input(
         "Till what age do you plan to continue SIPs?",
-        min_value=0, value=int(ss.sip_age), step=1, key="inp_sip_age",
+        min_value=0,
+        value=None if int(ss.sip_age) == 0 else int(ss.sip_age),
+        placeholder="e.g. 60",
+        step=1, key="inp_sip_age",
     )
     other_inv = st.number_input(
         "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.) (Rs.)",
-        min_value=0, value=int(ss.other_investments), step=10000, key="inp_other_inv",
+        min_value=0,
+        value=None if int(ss.other_investments) == 0 else int(ss.other_investments),
+        placeholder="Enter amount",
+        step=10000, key="inp_other_inv",
     )
 
     st.markdown('</div>', unsafe_allow_html=True)
 
     def _save():
-        ss.lumpsum_amount = lumpsum
-        ss.sip_amount = sip
-        ss.sip_age = sip_age
-        ss.other_investments = other_inv
+        ss.lumpsum_amount = lumpsum or 0
+        ss.sip_amount = sip or 0
+        ss.sip_age = sip_age or 0
+        ss.other_investments = other_inv or 0
         return True
 
     _nav_buttons("8", on_next=_save)
@@ -517,14 +569,14 @@ def _step_goal_module(module_key: str):
 
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("← Previous", use_container_width=True, key=f"btn_prev_{module_key}"):
-            st.session_state[module_key] = result
-            _go_prev()
-            st.rerun()
-    with col2:
         if st.button("Next →", use_container_width=True, key=f"btn_next_{module_key}"):
             st.session_state[module_key] = result
             _go_next()
+            st.rerun()
+    with col2:
+        if st.button("← Previous", use_container_width=True, key=f"btn_prev_{module_key}"):
+            st.session_state[module_key] = result
+            _go_prev()
             st.rerun()
 
 
@@ -615,12 +667,12 @@ def _step_summary():
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
+        if st.button("Submit ✓", use_container_width=True, type="primary", key="btn_submit"):
+            _submit()
+    with col2:
         if st.button("← Previous", use_container_width=True, key="btn_prev_summary"):
             _go_prev()
             st.rerun()
-    with col2:
-        if st.button("Submit", use_container_width=True, type="primary", key="btn_submit"):
-            _submit()
 
 
 def _collect_data() -> dict:

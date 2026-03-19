@@ -22,7 +22,7 @@ STEP_LABELS = [
     "Summary & Submit",
 ]
 
-HEADER_IMAGE_PATH = "InfiniteImage.jpeg"
+HEADER_IMAGE_PATH = "Header image.png"
 
 # ── Step 1 — Personal Info ────────────────────────────────────────────────────
 LABEL_NAME = "Full Name"
@@ -107,9 +107,9 @@ FORESEE_LIABILITY_OPTIONS = [
 ]
 
 MANAGE_LIABILITY_OPTIONS = [
-    "Yes — comfortably",
-    "Just about managing",
-    "No — struggling to meet them",
+    "Yes — fully covered without strain",
+    "Covered — with financial discipline",
+    "No — struggling to service them",
 ]
 
 # ── Step 7 — Risk Profile Questions ─────────────────────────────────────────
@@ -125,6 +125,58 @@ PORTFOLIO_PREFERENCE_OPTIONS = [
     "Grow slowly with some safety — Low risk, ~9% p.a., worst -3% / best +15%",
     "Grow well with some ups and downs — Moderate risk, ~12% p.a., worst -7% / best +20%",
     "Grow faster, even if it means high risk — High risk, ~15% p.a., worst -10% / best +25%",
+]
+
+# Short labels used in the radio (map by index to PORTFOLIO_PREFERENCE_OPTIONS)
+PORTFOLIO_SHORT_LABELS = [
+    "Safe Growth",
+    "Slow & Steady",
+    "Balanced Growth",
+    "High Growth",
+]
+
+# Card display data for the portfolio preference section
+PORTFOLIO_CARDS = [
+    {
+        "icon": "🛡️",
+        "title": "Safe Growth",
+        "description": "Grow safely, even if returns are low",
+        "risk": "Very Low Risk",
+        "risk_class": "risk-vlow",
+        "return_pa": "~6% p.a.",
+        "worst": "-1%",
+        "best": "+10%",
+    },
+    {
+        "icon": "🌱",
+        "title": "Slow & Steady",
+        "description": "Grow slowly with some safety",
+        "risk": "Low Risk",
+        "risk_class": "risk-low",
+        "return_pa": "~9% p.a.",
+        "worst": "-3%",
+        "best": "+15%",
+    },
+    {
+        "icon": "⚖️",
+        "title": "Balanced Growth",
+        "description": "Grow well with some ups and downs",
+        "risk": "Moderate Risk",
+        "risk_class": "risk-mod",
+        "return_pa": "~12% p.a.",
+        "worst": "-7%",
+        "best": "+20%",
+    },
+    {
+        "icon": "🚀",
+        "title": "High Growth",
+        "description": "Grow faster, even if it means high risk",
+        "risk": "High Risk",
+        "risk_class": "risk-high",
+        "return_pa": "~15% p.a.",
+        "worst": "-10%",
+        "best": "+25%",
+    },
 ]
 
 INVESTMENT_HORIZON_OPTIONS = [
@@ -167,6 +219,13 @@ MAX_CHILDREN = 4
 # ── Custom CSS ───────────────────────────────────────────────────────────────
 CUSTOM_CSS = """
 <style>
+    /* Force light background — overrides phone dark mode */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+        background-color: #ffffff !important;
+        color: #1a1a2e !important;
+    }
+    [data-testid="stSidebar"] { background-color: #f8fafc !important; }
+
     /* Brand colours */
     :root {
         --pu-blue: #1a56db;
@@ -181,52 +240,60 @@ CUSTOM_CSS = """
     }
     .block-container {
         animation: fadeInUp 0.35s ease-out;
+        padding-top: 1rem !important;
     }
 
-    /* Header area — logo + subtitle */
+    /* Header area — full-width banner image */
     .logo-header {
         text-align: center;
-        padding: 1rem 0 0.25rem 0;
+        padding: 0.5rem 0 0 0;
     }
     .logo-header img {
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        object-fit: cover;
+        width: 100%;
+        max-width: 520px;
+        height: auto;
+        border-radius: 12px;
+        object-fit: contain;
         margin-bottom: 0.35rem;
     }
     .logo-subtitle {
         text-align: center;
-        font-size: 1.35rem;
+        font-size: 1.2rem;
         font-weight: 600;
         color: #1a56db;
-        letter-spacing: 0.5px;
-        margin-bottom: 1rem;
+        letter-spacing: 1px;
+        margin: 0.4rem 0 0.8rem 0;
+        text-transform: uppercase;
     }
 
-    /* Progress bar override */
+    /* Progress bar track + fill */
+    .stProgress > div > div {
+        background-color: #dbeafe !important;
+        border-radius: 999px;
+    }
     .stProgress > div > div > div {
-        background: linear-gradient(90deg, #1a56db, #3b82f6);
-        transition: width 0.4s ease;
+        background: linear-gradient(90deg, #1a56db, #3b82f6) !important;
+        border-radius: 999px;
+        transition: width 0.45s ease;
     }
 
     /* Section cards */
     .section-card {
-        background: var(--pu-white);
+        background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
         padding: 1.75rem;
         margin-bottom: 1.25rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         animation: fadeInUp 0.3s ease-out;
     }
     .section-title {
         color: #1a56db;
-        font-size: 1.25rem;
-        font-weight: 600;
+        font-size: 1.2rem;
+        font-weight: 700;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e8eefb;
+        border-bottom: 2px solid #dbeafe;
     }
 
     /* Navigation buttons */
@@ -235,10 +302,22 @@ CUSTOM_CSS = """
         padding: 0.5rem 2rem;
         font-weight: 600;
         transition: all 0.2s ease;
+        background-color: #ffffff;
+        color: #1a56db;
+        border: 1.5px solid #1a56db;
     }
     div.stButton > button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(26,86,219,0.15);
+        box-shadow: 0 3px 10px rgba(26,86,219,0.18);
+        background-color: #eef2ff;
+    }
+    div.stButton > button[kind="primary"] {
+        background-color: #1a56db !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #1e40af !important;
     }
 
     /* Summary section */
@@ -254,24 +333,97 @@ CUSTOM_CSS = """
         margin: 0 0 0.5rem 0;
     }
 
-    /* Thank-you header (reused on success) */
+    /* Thank-you header */
     .main-header {
         background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
         padding: 1.5rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.5rem;
-        color: white;
+        color: white !important;
         text-align: center;
     }
-    .main-header h1 { margin: 0; font-size: 2rem; font-weight: 700; }
-    .main-header p  { margin: 0.25rem 0 0 0; font-size: 1rem; opacity: 0.9; }
+    .main-header h1 { margin: 0; font-size: 2rem; font-weight: 700; color: white !important; }
+    .main-header p  { margin: 0.25rem 0 0 0; font-size: 1rem; opacity: 0.9; color: white !important; }
 
-    /* Radio / select spacing */
-    div[data-baseweb="radio"] > div { gap: 0.15rem; }
+    /* Radio spacing */
+    div[data-baseweb="radio"] > div { gap: 0.2rem; }
+
+    /* ── Portfolio Growth Cards ── */
+    .port-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin: 0.75rem 0 1rem 0;
+    }
+    @media (max-width: 480px) {
+        .port-grid { grid-template-columns: 1fr; }
+    }
+    .port-card {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.9rem 1rem;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .port-card:hover {
+        border-color: #93c5fd;
+        box-shadow: 0 2px 8px rgba(26,86,219,0.10);
+    }
+    .port-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-bottom: 0.35rem;
+    }
+    .port-icon { font-size: 1.2rem; }
+    .port-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #1a1a2e;
+    }
+    .port-desc {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+    .port-risk {
+        display: inline-block;
+        font-size: 0.7rem;
+        padding: 0.12rem 0.55rem;
+        border-radius: 20px;
+        font-weight: 700;
+        margin-bottom: 0.45rem;
+        letter-spacing: 0.3px;
+    }
+    .risk-vlow { background: #dcfce7; color: #14532d; }
+    .risk-low  { background: #fef9c3; color: #713f12; }
+    .risk-mod  { background: #ffedd5; color: #7c2d12; }
+    .risk-high { background: #fee2e2; color: #7f1d1d; }
+    .port-return {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #1a56db;
+        margin-bottom: 0.3rem;
+    }
+    .port-range {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+    .neg-val { color: #dc2626; }
+    .pos-val { color: #16a34a; }
+    .port-range-label {
+        font-size: 0.68rem;
+        color: #94a3b8;
+        font-weight: 500;
+    }
 
     /* Hide Streamlit branding */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    #MainMenu { visibility: hidden; }
+    footer { visibility: hidden; }
+    header { visibility: hidden; }
 </style>
 """
