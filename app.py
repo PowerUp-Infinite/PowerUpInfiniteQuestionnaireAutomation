@@ -160,22 +160,22 @@ def _go_to(step: int):
 
 def _nav_buttons(step_key: str, on_next=None, prev=True):
     """
-    Render Next / Previous buttons.
-    Col1 = Next, Col2 = Previous.
-    Mobile: stacks vertically → Next on top (good).
-    Desktop: CSS nav-marker reverses flex order → Previous left, Next right.
+    Render Previous / Next buttons.
+    Col1 = Previous (left on desktop), Col2 = Next (right on desktop).
+    Mobile: columns stack vertically → Previous top, Next below.
+    CSS nav-marker + column-reverse flips the stack on mobile so Next is on top.
     """
     st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Next →", use_container_width=True, key=f"btn_next_{step_key}"):
-            if on_next is None or on_next():
-                _go_next()
-                st.rerun()
-    with col2:
         if prev:
             if st.button("← Previous", use_container_width=True, key=f"btn_prev_{step_key}"):
                 _go_prev()
+                st.rerun()
+    with col2:
+        if st.button("Next →", use_container_width=True, key=f"btn_next_{step_key}"):
+            if on_next is None or on_next():
+                _go_next()
                 st.rerun()
 
 
@@ -536,14 +536,14 @@ def _step_goal_module(module_key: str):
     st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Next →", use_container_width=True, key=f"btn_next_{module_key}"):
-            st.session_state[module_key] = result
-            _go_next()
-            st.rerun()
-    with col2:
         if st.button("← Previous", use_container_width=True, key=f"btn_prev_{module_key}"):
             st.session_state[module_key] = result
             _go_prev()
+            st.rerun()
+    with col2:
+        if st.button("Next →", use_container_width=True, key=f"btn_next_{module_key}"):
+            st.session_state[module_key] = result
+            _go_next()
             st.rerun()
 
 
@@ -634,16 +634,16 @@ def _step_summary():
 
     st.divider()
 
-    # Navigation — marker enables CSS desktop reversal (Next right, Prev left)
+    # Navigation
     st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Submit ✓", use_container_width=True, type="primary", key="btn_submit"):
-            _submit()
-    with col2:
         if st.button("← Previous", use_container_width=True, key="btn_prev_summary"):
             _go_prev()
             st.rerun()
+    with col2:
+        if st.button("Submit ✓", use_container_width=True, type="primary", key="btn_submit"):
+            _submit()
 
 
 def _collect_data() -> dict:
@@ -694,12 +694,12 @@ def _render_success():
     st.markdown(
         '<div class="main-header">'
         '<h1>Thank You!</h1>'
-        '<p>Your responses have been submitted successfully.</p>'
+        '<p>Your answers have been submitted successfully.</p>'
+        '<p>Your circle manager will reach out to you soon.</p>'
         '</div>',
         unsafe_allow_html=True,
     )
     st.success(f"Submitted at: {st.session_state.submit_timestamp}")
-    st.info("You may close this page. If you need to submit another response, refresh the page.")
 
 
 # ═════════════════════════════════════════════════════════════════════════════

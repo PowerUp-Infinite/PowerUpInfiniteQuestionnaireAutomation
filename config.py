@@ -422,12 +422,13 @@ CUSTOM_CSS = """
     }
 
     /* ── Nav button order ──
-       Mobile  (<640px): columns stack → Next (col1) on top, Prev (col2) below.
-       Desktop (≥640px): reverse flex so Prev appears left, Next appears right. */
+       Desktop: natural order → Previous col1 (left), Next col2 (right). ✅
+       Mobile (<640px): columns stack vertically → Previous on top by default.
+       Fix: on mobile, column-reverse so Next floats to top, Previous below. */
     .nav-marker { display: none; }
-    @media (min-width: 640px) {
+    @media (max-width: 639px) {
         .stMarkdownContainer:has(.nav-marker) + div[data-testid="stHorizontalBlock"] {
-            flex-direction: row-reverse;
+            flex-direction: column-reverse !important;
         }
     }
 
