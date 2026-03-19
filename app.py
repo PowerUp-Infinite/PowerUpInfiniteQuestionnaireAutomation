@@ -161,10 +161,11 @@ def _go_to(step: int):
 def _nav_buttons(step_key: str, on_next=None, prev=True):
     """
     Render Next / Previous buttons.
-    Next is in col1 (left / top on mobile) so it's always the prominent action.
-    on_next: callback returning True if validation passes (and saving state).
-    If on_next is None, just advance.
+    Col1 = Next, Col2 = Previous.
+    Mobile: stacks vertically → Next on top (good).
+    Desktop: CSS nav-marker reverses flex order → Previous left, Next right.
     """
+    st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Next →", use_container_width=True, key=f"btn_next_{step_key}"):
@@ -211,13 +212,10 @@ def _render_header():
 
 # ── Step 0: Personal Info ────────────────────────────────────────────────────
 def _step_personal_info():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Personal Information</div>', unsafe_allow_html=True)
 
     name = st.text_input(LABEL_NAME, value=st.session_state.name, key="inp_name")
     email = st.text_input(LABEL_EMAIL, value=st.session_state.email, key="inp_email")
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if not name.strip():
@@ -235,14 +233,11 @@ def _step_personal_info():
 
 # ── Step 1: Age ──────────────────────────────────────────────────────────────
 def _step_age():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Age Group</div>', unsafe_allow_html=True)
 
     current = st.session_state.age
     idx = AGE_OPTIONS.index(current) if current in AGE_OPTIONS else None
     age = st.radio("What is your age group?", AGE_OPTIONS, index=idx, key="inp_age")
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if age is None:
@@ -260,7 +255,6 @@ def _step_age():
 
 # ── Step 2: Employment ───────────────────────────────────────────────────────
 def _step_employment():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Employment Status</div>', unsafe_allow_html=True)
 
     options = get_employment_options(st.session_state.age)
@@ -270,8 +264,6 @@ def _step_employment():
 
     if emp:
         st.caption(EMPLOYMENT_DESCRIPTIONS.get(emp, ""))
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if emp is None:
@@ -288,7 +280,6 @@ def _step_employment():
 
 # ── Step 3: Income Source ────────────────────────────────────────────────────
 def _step_income():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Primary Income Source</div>', unsafe_allow_html=True)
 
     options = get_income_options(st.session_state.employment)
@@ -298,8 +289,6 @@ def _step_income():
 
     if inc:
         st.caption(INCOME_DESCRIPTIONS.get(inc, ""))
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if inc is None:
@@ -313,7 +302,6 @@ def _step_income():
 
 # ── Step 4: Investment Goals ─────────────────────────────────────────────────
 def _step_goals():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Investment Goals</div>', unsafe_allow_html=True)
 
     options = get_goal_options(st.session_state.employment)
@@ -332,8 +320,6 @@ def _step_goals():
             value=st.session_state.other_goal_text, key="inp_other_goal",
         )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
     def _validate():
         if not goals:
             st.error("Please select at least one investment goal.")
@@ -351,7 +337,6 @@ def _step_goals():
 
 # ── Step 5: Liabilities ─────────────────────────────────────────────────────
 def _step_liabilities():
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Liabilities</div>', unsafe_allow_html=True)
 
     current_type = st.session_state.liability_type
@@ -377,8 +362,6 @@ def _step_liabilities():
             "Can you comfortably meet your liabilities from your current income?",
             MANAGE_LIABILITY_OPTIONS, index=fu_idx, key="inp_manage",
         )
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if liability is None:
@@ -421,7 +404,6 @@ def _build_portfolio_cards_html() -> str:
 def _step_risk_appetite():
     ss = st.session_state
 
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Risk Appetite</div>', unsafe_allow_html=True)
 
     ef_idx = EMERGENCY_FUND_OPTIONS.index(ss.emergency_fund) if ss.emergency_fund in EMERGENCY_FUND_OPTIONS else None
@@ -451,8 +433,6 @@ def _step_risk_appetite():
         label_visibility="collapsed",
     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
     def _validate():
         if emergency_fund is None:
             st.error("Please select how many months of emergency fund you maintain.")
@@ -473,7 +453,6 @@ def _step_risk_appetite():
 def _step_investment_outlook():
     ss = st.session_state
 
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Investment Outlook</div>', unsafe_allow_html=True)
 
     ih_idx = INVESTMENT_HORIZON_OPTIONS.index(ss.investment_horizon) if ss.investment_horizon in INVESTMENT_HORIZON_OPTIONS else None
@@ -489,8 +468,6 @@ def _step_investment_outlook():
         "If your portfolio dropped 20% in a month, what would you do?",
         FALL_REACTION_OPTIONS, index=fr_idx, key="inp_fr",
     )
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     def _validate():
         if invest_horizon is None:
@@ -510,7 +487,6 @@ def _step_investment_outlook():
 def _step_investment_details():
     ss = st.session_state
 
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Investment Details</div>', unsafe_allow_html=True)
 
     lumpsum = st.number_input(
@@ -542,8 +518,6 @@ def _step_investment_details():
         step=10000, key="inp_other_inv",
     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
     def _save():
         ss.lumpsum_amount = lumpsum or 0
         ss.sip_amount = sip or 0
@@ -556,17 +530,10 @@ def _step_investment_details():
 
 # ── Goal Module Step ─────────────────────────────────────────────────────────
 def _step_goal_module(module_key: str):
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
     renderer = MODULE_RENDERERS[module_key]
     result = renderer.render(dict(st.session_state))
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    def _save():
-        st.session_state[module_key] = result
-        return True
-
+    st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Next →", use_container_width=True, key=f"btn_next_{module_key}"):
@@ -584,11 +551,14 @@ def _step_goal_module(module_key: str):
 # SUMMARY PAGE
 # ═════════════════════════════════════════════════════════════════════════════
 def _render_summary_section(title: str, items: list[tuple[str, str]]):
-    st.markdown(f'<div class="summary-group"><h4>{title}</h4>', unsafe_allow_html=True)
-    for label, value in items:
-        if value:
-            st.markdown(f"**{label}:** {value}")
-    st.markdown('</div>', unsafe_allow_html=True)
+    rows = "".join(
+        f'<p style="margin:0.2rem 0;"><strong>{label}:</strong> {value}</p>'
+        for label, value in items if value
+    )
+    st.markdown(
+        f'<div class="summary-group"><h4>{title}</h4>{rows}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def _step_summary():
@@ -664,7 +634,8 @@ def _step_summary():
 
     st.divider()
 
-    # Navigation
+    # Navigation — marker enables CSS desktop reversal (Next right, Prev left)
+    st.markdown('<span class="nav-marker"></span>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Submit ✓", use_container_width=True, type="primary", key="btn_submit"):

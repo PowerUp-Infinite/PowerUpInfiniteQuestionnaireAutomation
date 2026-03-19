@@ -421,6 +421,16 @@ CUSTOM_CSS = """
         font-weight: 500;
     }
 
+    /* ── Nav button order ──
+       Mobile  (<640px): columns stack → Next (col1) on top, Prev (col2) below.
+       Desktop (≥640px): reverse flex so Prev appears left, Next appears right. */
+    .nav-marker { display: none; }
+    @media (min-width: 640px) {
+        .stMarkdownContainer:has(.nav-marker) + div[data-testid="stHorizontalBlock"] {
+            flex-direction: row-reverse;
+        }
+    }
+
     /* Hide Streamlit branding */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
