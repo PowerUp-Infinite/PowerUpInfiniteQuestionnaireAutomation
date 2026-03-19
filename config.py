@@ -423,11 +423,12 @@ CUSTOM_CSS = """
 
     /* ── Nav button order ──
        Desktop: natural order → Previous col1 (left), Next col2 (right). ✅
-       Mobile (<640px): columns stack vertically → Previous on top by default.
-       Fix: on mobile, column-reverse so Next floats to top, Previous below. */
+       Mobile (<640px): columns stack → Previous on top by default.
+       Fix: reverse ALL stacked column blocks on mobile so Next/Submit
+       appears above Previous. */
     .nav-marker { display: none; }
     @media (max-width: 639px) {
-        .stMarkdownContainer:has(.nav-marker) + div[data-testid="stHorizontalBlock"] {
+        div[data-testid="stHorizontalBlock"] {
             flex-direction: column-reverse !important;
         }
     }
