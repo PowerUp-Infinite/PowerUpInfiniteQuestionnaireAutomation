@@ -458,7 +458,7 @@ def _step_investment_outlook():
 
     fr_idx = FALL_REACTION_OPTIONS.index(ss.fall_reaction) if ss.fall_reaction in FALL_REACTION_OPTIONS else None
     fall_react = st.radio(
-        "If your portfolio dropped 20% in a month, what would you do?",
+        "If your portfolio dropped 20% within a few months, what would you do?",
         FALL_REACTION_OPTIONS, index=fr_idx, key="inp_fr",
     )
 
