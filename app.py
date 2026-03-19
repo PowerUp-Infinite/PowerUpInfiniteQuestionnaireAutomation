@@ -107,8 +107,9 @@ def _active_goal_modules() -> list[str]:
     employment = st.session_state.get("employment", "")
     modules = []
 
-    # Retirement planning is shown for ALL non-retired users (regardless of goal selection)
-    if employment and not is_retired_status(employment):
+    # Retirement planning is shown for non-retired users UNLESS they only picked "No Fixed Goal"
+    only_no_fixed = all(g in GOALS_WITHOUT_MODULE for g in goals)
+    if employment and not is_retired_status(employment) and not only_no_fixed:
         modules.append("retirement")
 
     for goal in goals:

@@ -74,7 +74,7 @@ GOALS_WORKING = [
     "Children Education",
     "Vehicle Purchase",
     "Children Marriage",
-    "No Fixed Goal (Wealth Appreciation)",
+    "No Fixed Goal",
     "Other",
 ]
 GOALS_RETIRED = [
@@ -84,12 +84,12 @@ GOALS_RETIRED = [
     "Children Education",
     "Vehicle Purchase",
     "Children Marriage",
-    "No Fixed Goal (Wealth Appreciation)",
+    "No Fixed Goal",
     "Other",
 ]
 
 # Goals that do NOT trigger a goal-specific module form
-GOALS_WITHOUT_MODULE = {"No Fixed Goal (Wealth Appreciation)", "Wealth Conservation", "Other"}
+GOALS_WITHOUT_MODULE = {"No Fixed Goal", "Wealth Conservation", "Other"}
 
 # ── Step 6 — Liabilities ────────────────────────────────────────────────────
 LIABILITY_OPTIONS = [
