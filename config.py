@@ -108,7 +108,7 @@ FORESEE_LIABILITY_OPTIONS = [
 
 MANAGE_LIABILITY_OPTIONS = [
     "Yes — fully covered without strain",
-    "Covered — with financial discipline",
+    "Just about managing",
     "No — struggling to service them",
 ]
 
