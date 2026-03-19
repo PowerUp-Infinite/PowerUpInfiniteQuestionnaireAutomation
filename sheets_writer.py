@@ -3,7 +3,7 @@ PowerUp Infinite — Google Sheets Writer
 Writes one row per client submission to Google Sheets via gspread.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 import gspread
 import streamlit as st
@@ -75,7 +75,7 @@ def _build_header() -> list[str]:
 def _build_row(data: dict) -> list:
     """Build a flat row list from the session-state data dict."""
     row = [
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime("%Y-%m-%d %H:%M:%S IST"),
         data.get("name", ""),
         data.get("email", ""),
         data.get("age", ""),
