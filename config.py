@@ -188,9 +188,16 @@ INVESTMENT_HORIZON_OPTIONS = [
 
 FALL_REACTION_OPTIONS = [
     "Exit all investments immediately",
-    "Exit partially and hold the rest",
-    "Stay invested and wait for recovery",
-    "Invest more to take advantage of lower prices",
+    "Exit partially",
+    "Stay invested",
+    "Invest more",
+]
+
+FALL_REACTION_CAPTIONS = [
+    "To prevent further loss",
+    "Shift to safer options",
+    "I'm comfortable with market fluctuations",
+    "I will average my cost",
 ]
 
 # ── Goal Module Labels ───────────────────────────────────────────────────────

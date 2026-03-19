@@ -16,7 +16,7 @@ from config import (
     LIABILITY_OPTIONS, FORESEE_LIABILITY_OPTIONS, MANAGE_LIABILITY_OPTIONS,
     EMERGENCY_FUND_OPTIONS, PORTFOLIO_PREFERENCE_OPTIONS,
     PORTFOLIO_SHORT_LABELS, PORTFOLIO_CARDS,
-    INVESTMENT_HORIZON_OPTIONS, FALL_REACTION_OPTIONS,
+    INVESTMENT_HORIZON_OPTIONS, FALL_REACTION_OPTIONS, FALL_REACTION_CAPTIONS,
     GOAL_MODULE_MAP, GOALS_WITHOUT_MODULE,
 )
 from logic import (
@@ -465,8 +465,8 @@ def _step_investment_outlook():
 
     fr_idx = FALL_REACTION_OPTIONS.index(ss.fall_reaction) if ss.fall_reaction in FALL_REACTION_OPTIONS else None
     fall_react = st.radio(
-        "If your portfolio dropped 20% within a few months, what would you do?",
-        FALL_REACTION_OPTIONS, index=fr_idx, key="inp_fr",
+        "If your investments fall by 20% within a few months, what would you do?",
+        FALL_REACTION_OPTIONS, captions=FALL_REACTION_CAPTIONS, index=fr_idx, key="inp_fr",
     )
 
     def _validate():
