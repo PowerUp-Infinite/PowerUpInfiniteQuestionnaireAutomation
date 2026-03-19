@@ -34,16 +34,17 @@ def render(ss: dict) -> dict:
             placeholder="e.g., 12-14 years",
             key=f"mar_c{i}_timeframe",
         )
+        _mb = int(child_data.get("budget", 0))
         budget = st.number_input(
             f"Child {i} — Estimated budget in today's value (Rs.)",
-            min_value=0, value=int(child_data.get("budget", 0)),
-            step=50000, key=f"mar_c{i}_budget",
+            min_value=0, value=_mb if _mb else None,
+            placeholder="Enter amount", step=50000, key=f"mar_c{i}_budget",
         )
 
         result[f"child_{i}"] = {
             "name": name,
             "timeframe": timeframe,
-            "budget": budget,
+            "budget": budget or 0,
         }
 
     return result

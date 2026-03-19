@@ -16,10 +16,11 @@ def render(ss: dict) -> dict:
         index=VEHICLE_PURCHASE_YEARS.index(data["purchase_year"]) if data.get("purchase_year") in VEHICLE_PURCHASE_YEARS else 0,
         key="veh_purchase_year",
     )
+    _vv = int(data.get("value", 0))
     value = st.number_input(
         "Estimated vehicle value in today's prices (Rs.)",
-        min_value=0, value=int(data.get("value", 0)),
-        step=50000, key="veh_value",
+        min_value=0, value=_vv if _vv else None,
+        placeholder="Enter amount", step=50000, key="veh_value",
     )
     flexibility = st.slider(
         "Flexibility to shift purchase timeline (years)",
@@ -45,7 +46,7 @@ def render(ss: dict) -> dict:
 
     return {
         "purchase_year": purchase_year,
-        "value": value,
+        "value": value or 0,
         "flexibility": flexibility,
         "loan": loan,
         "down_payment": down_payment,

@@ -38,22 +38,24 @@ def render(ss: dict) -> dict:
                 key=f"edu_c{i}_pg_year",
             )
         with col2:
+            _uc = int(child_data.get("ug_cost", 0))
             ug_cost = st.number_input(
                 f"Child {i} — Estimated UG cost today (Rs.)",
-                min_value=0, value=int(child_data.get("ug_cost", 0)),
-                step=50000, key=f"edu_c{i}_ug_cost",
+                min_value=0, value=_uc if _uc else None,
+                placeholder="Enter amount", step=50000, key=f"edu_c{i}_ug_cost",
             )
+            _pc = int(child_data.get("pg_cost", 0))
             pg_cost = st.number_input(
                 f"Child {i} — Estimated PG cost today (Rs., 0 if N/A)",
-                min_value=0, value=int(child_data.get("pg_cost", 0)),
-                step=50000, key=f"edu_c{i}_pg_cost",
+                min_value=0, value=_pc if _pc else None,
+                placeholder="Enter amount", step=50000, key=f"edu_c{i}_pg_cost",
             )
 
         result[f"child_{i}"] = {
             "ug_year": ug_year,
-            "ug_cost": ug_cost,
+            "ug_cost": ug_cost or 0,
             "pg_year": pg_year,
-            "pg_cost": pg_cost,
+            "pg_cost": pg_cost or 0,
         }
 
     return result

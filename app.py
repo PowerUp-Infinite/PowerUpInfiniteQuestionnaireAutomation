@@ -23,7 +23,7 @@ from logic import (
     get_employment_options, get_income_options, get_goal_options,
     get_goal_modules, has_no_liabilities, should_skip_all_goal_modules,
     should_show_retirement_module, should_show_post_retirement_module,
-    validate_email,
+    is_retired_status, validate_email,
 )
 from sheets_writer import write_to_sheet
 from goal_modules import retirement, post_retirement, vehicle, home, education, marriage
@@ -78,7 +78,7 @@ def _init_state():
         "lumpsum_amount": 0,
         "sip_amount": 0,
         "sip_age": 0,
-        "other_investments": 0,
+        "other_investments": "",
         # Goal modules (dicts)
         "retirement": {},
         "post_retirement": {},
@@ -106,17 +106,23 @@ def _active_goal_modules() -> list[str]:
     goals = st.session_state.get("goals", [])
     employment = st.session_state.get("employment", "")
     modules = []
+
+    # Retirement planning is shown for ALL non-retired users (regardless of goal selection)
+    if employment and not is_retired_status(employment):
+        modules.append("retirement")
+
     for goal in goals:
         if goal in GOALS_WITHOUT_MODULE:
             continue
         key = GOAL_MODULE_MAP.get(goal)
         if key is None:
             continue
-        if key == "retirement" and not should_show_retirement_module(goals, employment):
-            continue
+        if key == "retirement":
+            continue  # already handled above
         if key == "post_retirement" and not should_show_post_retirement_module(goals, employment):
             continue
-        modules.append(key)
+        if key not in modules:
+            modules.append(key)
     return modules
 
 
@@ -503,19 +509,18 @@ def _step_investment_details():
         placeholder="e.g. 60",
         step=1, key="inp_sip_age",
     )
-    other_inv = st.number_input(
-        "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.) (Rs.)",
-        min_value=0,
-        value=None if int(ss.other_investments) == 0 else int(ss.other_investments),
-        placeholder="Enter amount",
-        step=10000, key="inp_other_inv",
+    other_inv = st.text_input(
+        "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.)",
+        value=ss.other_investments,
+        placeholder="e.g., FD: 5L, Stocks: 10L, PMS: 15L",
+        key="inp_other_inv",
     )
 
     def _save():
         ss.lumpsum_amount = lumpsum or 0
         ss.sip_amount = sip or 0
         ss.sip_age = sip_age or 0
-        ss.other_investments = other_inv or 0
+        ss.other_investments = other_inv
         return True
 
     _nav_buttons("8", on_next=_save)
@@ -604,7 +609,7 @@ def _step_summary():
         ("Lumpsum Amount", f"Rs. {ss.lumpsum_amount:,}"),
         ("Monthly SIP", f"Rs. {ss.sip_amount:,}"),
         ("SIP Continuation Age", str(ss.sip_age) if ss.sip_age else ""),
-        ("Other Investments", f"Rs. {ss.other_investments:,}"),
+        ("Other Investments", ss.other_investments if ss.other_investments else "—"),
     ])
     if st.button("Edit Risk Profile", key="edit_6"):
         _go_to(6); st.rerun()
