@@ -379,26 +379,30 @@ def _step_liabilities():
 
 # ── Step 6: Risk Appetite (Emergency Fund + Portfolio Preference) ────────────
 def _build_portfolio_cards_html() -> str:
-    """Build the visual portfolio card grid HTML."""
-    cards_html = '<div class="port-grid">'
+    """Build a clean text-based portfolio preference reference table."""
+    rows = ""
     for card in PORTFOLIO_CARDS:
-        cards_html += f"""
-        <div class="port-card">
-            <div class="port-card-header">
-                <span class="port-icon">{card["icon"]}</span>
-                <span class="port-title">{card["title"]}</span>
-            </div>
-            <div class="port-desc">{card["description"]}</div>
-            <div><span class="port-risk {card["risk_class"]}">{card["risk"]}</span></div>
-            <div class="port-return">{card["return_pa"]}</div>
-            <div class="port-range-label">Range of outcomes</div>
-            <div class="port-range">
-                <span class="neg-val">▼ Worst &nbsp;{card["worst"]}</span>
-                <span class="pos-val">▲ Best &nbsp;{card["best"]}</span>
-            </div>
-        </div>"""
-    cards_html += "</div>"
-    return cards_html
+        rows += f"""
+        <tr>
+            <td class="pt-name">{card["icon"]} {card["title"]}</td>
+            <td><strong class="{card["risk_class"]}-text">{card["risk"]}</strong></td>
+            <td class="pt-return">{card["return_pa"]}</td>
+            <td class="neg-val">{card["worst"]}</td>
+            <td class="pos-val">{card["best"]}</td>
+        </tr>"""
+    return f"""
+    <table class="port-table">
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Risk Level</th>
+                <th>Target Return</th>
+                <th>Worst Case</th>
+                <th>Best Case</th>
+            </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+    </table>"""
 
 
 def _step_risk_appetite():

@@ -348,78 +348,45 @@ CUSTOM_CSS = """
     /* Radio spacing */
     div[data-baseweb="radio"] > div { gap: 0.2rem; }
 
-    /* ── Portfolio Growth Cards ── */
-    .port-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin: 0.75rem 0 1rem 0;
+    /* ── Portfolio Preference Table ── */
+    .port-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0.6rem 0 1rem 0;
+        font-size: 0.875rem;
     }
-    @media (max-width: 480px) {
-        .port-grid { grid-template-columns: 1fr; }
+    .port-table thead tr {
+        border-bottom: 2px solid #dbeafe;
     }
-    .port-card {
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 0.9rem 1rem;
-        background: #f8fafc;
-        cursor: pointer;
-        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    }
-    .port-card:hover {
-        border-color: #93c5fd;
-        box-shadow: 0 2px 8px rgba(26,86,219,0.10);
-    }
-    .port-card-header {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        margin-bottom: 0.35rem;
-    }
-    .port-icon { font-size: 1.2rem; }
-    .port-title {
+    .port-table th {
+        text-align: left;
+        padding: 0.35rem 0.6rem;
+        font-size: 0.72rem;
         font-weight: 700;
-        font-size: 0.95rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .port-table td {
+        padding: 0.5rem 0.6rem;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+    }
+    .port-table tbody tr:last-child td { border-bottom: none; }
+    .pt-name {
+        font-weight: 600;
         color: #1a1a2e;
     }
-    .port-desc {
-        font-size: 0.78rem;
-        color: #64748b;
-        margin-bottom: 0.5rem;
-        line-height: 1.3;
-    }
-    .port-risk {
-        display: inline-block;
-        font-size: 0.7rem;
-        padding: 0.12rem 0.55rem;
-        border-radius: 20px;
+    .pt-return {
         font-weight: 700;
-        margin-bottom: 0.45rem;
-        letter-spacing: 0.3px;
-    }
-    .risk-vlow { background: #dcfce7; color: #14532d; }
-    .risk-low  { background: #fef9c3; color: #713f12; }
-    .risk-mod  { background: #ffedd5; color: #7c2d12; }
-    .risk-high { background: #fee2e2; color: #7f1d1d; }
-    .port-return {
-        font-size: 1.15rem;
-        font-weight: 800;
         color: #1a56db;
-        margin-bottom: 0.3rem;
     }
-    .port-range {
-        display: flex;
-        gap: 0.75rem;
-        font-size: 0.82rem;
-        font-weight: 700;
-    }
-    .neg-val { color: #dc2626; }
-    .pos-val { color: #16a34a; }
-    .port-range-label {
-        font-size: 0.68rem;
-        color: #94a3b8;
-        font-weight: 500;
-    }
+    .neg-val { color: #dc2626; font-weight: 700; }
+    .pos-val { color: #16a34a; font-weight: 700; }
+    .risk-vlow-text { color: #14532d; }
+    .risk-low-text  { color: #713f12; }
+    .risk-mod-text  { color: #7c2d12; }
+    .risk-high-text { color: #7f1d1d; }
 
     /* ── Nav button order ──
        Desktop: natural order → Previous col1 (left), Next col2 (right). ✅
