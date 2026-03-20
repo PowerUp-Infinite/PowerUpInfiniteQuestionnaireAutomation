@@ -40,12 +40,6 @@ def render(ss: dict) -> dict:
         value=data.get("yoy_increase", "0%"),
         key="ret_yoy_increase",
     )
-    other_investments = st.text_input(
-        "Value of other financial investments (FD, stocks, PMS, etc.)",
-        value=data.get("other_investments", ""),
-        placeholder="e.g., FD: 5L, Stocks: 10L, PMS: 15L",
-        key="ret_other_investments",
-    )
     liabilities_detail = st.text_area(
         "Liabilities detail",
         value=data.get("liabilities_detail", ""),
@@ -59,6 +53,5 @@ def render(ss: dict) -> dict:
         "expense_change": expense_change,
         "monthly_investment": monthly_investment or 0,
         "yoy_increase": yoy_increase,
-        "other_investments": other_investments,
         "liabilities_detail": liabilities_detail,
     }

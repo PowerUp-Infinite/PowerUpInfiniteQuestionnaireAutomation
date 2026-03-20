@@ -43,8 +43,7 @@ def _build_header() -> list[str]:
         # Retirement
         "Ret: Monthly Income", "Ret: Monthly Expenses",
         "Ret: Expense Change %", "Ret: Monthly Investment",
-        "Ret: YoY Investment Increase %", "Ret: Other Financial Investments",
-        "Ret: Liabilities Detail",
+        "Ret: YoY Investment Increase %", "Ret: Liabilities Detail",
         # Post-Retirement
         "PostRet: Passive+Pension Income", "PostRet: Living Expenses",
         "PostRet: Discretionary Expenses", "PostRet: Other Instruments",
@@ -102,7 +101,6 @@ def _build_row(data: dict) -> list:
         ret.get("expense_change", ""),
         ret.get("monthly_investment", ""),
         ret.get("yoy_increase", ""),
-        ret.get("other_investments", ""),
         ret.get("liabilities_detail", ""),
     ]
 
