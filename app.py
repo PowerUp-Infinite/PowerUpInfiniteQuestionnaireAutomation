@@ -15,7 +15,7 @@ from config import (
     INCOME_DESCRIPTIONS,
     LIABILITY_OPTIONS, FORESEE_LIABILITY_OPTIONS, MANAGE_LIABILITY_OPTIONS,
     EMERGENCY_FUND_OPTIONS, PORTFOLIO_PREFERENCE_OPTIONS,
-    PORTFOLIO_SHORT_LABELS, PORTFOLIO_CARDS,
+    PORTFOLIO_SHORT_LABELS, PORTFOLIO_CAPTIONS,
     INVESTMENT_HORIZON_OPTIONS, FALL_REACTION_OPTIONS, FALL_REACTION_CAPTIONS,
     GOAL_MODULE_MAP, GOALS_WITHOUT_MODULE,
 )
@@ -265,12 +265,10 @@ def _step_employment():
     st.markdown('<div class="section-title">Employment Status</div>', unsafe_allow_html=True)
 
     options = get_employment_options(st.session_state.age)
+    captions = [EMPLOYMENT_DESCRIPTIONS.get(opt, "") for opt in options]
     current = st.session_state.employment
     idx = options.index(current) if current in options else None
-    emp = st.radio("What is your current employment status?", options, index=idx, key="inp_emp")
-
-    if emp:
-        st.caption(EMPLOYMENT_DESCRIPTIONS.get(emp, ""))
+    emp = st.radio("What is your current employment status?", options, index=idx, captions=captions, key="inp_emp")
 
     def _validate():
         if emp is None:
@@ -290,12 +288,10 @@ def _step_income():
     st.markdown('<div class="section-title">Primary Income Source</div>', unsafe_allow_html=True)
 
     options = get_income_options(st.session_state.employment)
+    captions = [INCOME_DESCRIPTIONS.get(opt, "") for opt in options]
     current = st.session_state.income_source
     idx = options.index(current) if current in options else None
-    inc = st.radio("What is your primary source of income?", options, index=idx, key="inp_income")
-
-    if inc:
-        st.caption(INCOME_DESCRIPTIONS.get(inc, ""))
+    inc = st.radio("What is your primary source of income?", options, index=idx, captions=captions, key="inp_income")
 
     def _validate():
         if inc is None:
@@ -313,12 +309,13 @@ def _step_goals():
 
     options = get_goal_options(st.session_state.employment)
     current = st.session_state.goals
-    default = [g for g in current if g in options]
 
-    goals = st.multiselect(
-        "Select your investment goals (choose all that apply)",
-        options=options, default=default, key="inp_goals",
-    )
+    st.write("Select your investment goals (choose all that apply)")
+    goals = []
+    for opt in options:
+        checked = st.checkbox(opt, value=(opt in current), key=f"goal_{opt}")
+        if checked:
+            goals.append(opt)
 
     other_text = ""
     if "Other" in goals:
@@ -385,22 +382,6 @@ def _step_liabilities():
 
 
 # ── Step 6: Risk Appetite (Emergency Fund + Portfolio Preference) ────────────
-def _build_portfolio_cards_html() -> str:
-    """Build a clean inline text list for portfolio preference reference."""
-    items = ""
-    for card in PORTFOLIO_CARDS:
-        items += (
-            f'<p class="port-item">'
-            f'{card["icon"]} <strong>{card["title"]}</strong>'
-            f' &nbsp;·&nbsp; <strong class="{card["risk_class"]}-text">{card["risk"]}</strong>'
-            f' &nbsp;·&nbsp; <span class="pt-return">{card["return_pa"]}</span>'
-            f' &nbsp;·&nbsp; Worst <span class="neg-val">{card["worst"]}</span>'
-            f' &nbsp;/&nbsp; Best <span class="pos-val">{card["best"]}</span>'
-            f'</p>'
-        )
-    return f'<div class="port-list">{items}</div>'
-
-
 def _step_risk_appetite():
     ss = st.session_state
 
@@ -413,10 +394,6 @@ def _step_risk_appetite():
     )
 
     st.divider()
-    st.markdown("**How would you like your portfolio to grow?**")
-
-    # Visual reference cards
-    st.markdown(_build_portfolio_cards_html(), unsafe_allow_html=True)
 
     # Map current stored preference → short label index
     cur_pref = ss.portfolio_preference
@@ -426,11 +403,11 @@ def _step_risk_appetite():
         short_idx = None
 
     chosen_short = st.radio(
-        "Select your preference",
+        "How would you like your portfolio to grow?",
         PORTFOLIO_SHORT_LABELS,
+        captions=PORTFOLIO_CAPTIONS,
         index=short_idx,
         key="inp_pp",
-        label_visibility="collapsed",
     )
 
     def _validate():

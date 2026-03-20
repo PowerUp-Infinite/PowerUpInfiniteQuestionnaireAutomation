@@ -135,48 +135,12 @@ PORTFOLIO_SHORT_LABELS = [
     "High Growth",
 ]
 
-# Card display data for the portfolio preference section
-PORTFOLIO_CARDS = [
-    {
-        "icon": "🛡️",
-        "title": "Safe Growth",
-        "description": "Grow safely, even if returns are low",
-        "risk": "Very Low Risk",
-        "risk_class": "risk-vlow",
-        "return_pa": "~6% p.a.",
-        "worst": "-1%",
-        "best": "+10%",
-    },
-    {
-        "icon": "🌱",
-        "title": "Slow & Steady",
-        "description": "Grow slowly with some safety",
-        "risk": "Low Risk",
-        "risk_class": "risk-low",
-        "return_pa": "~9% p.a.",
-        "worst": "-3%",
-        "best": "+15%",
-    },
-    {
-        "icon": "⚖️",
-        "title": "Balanced Growth",
-        "description": "Grow well with some ups and downs",
-        "risk": "Moderate Risk",
-        "risk_class": "risk-mod",
-        "return_pa": "~12% p.a.",
-        "worst": "-7%",
-        "best": "+20%",
-    },
-    {
-        "icon": "🚀",
-        "title": "High Growth",
-        "description": "Grow faster, even if it means high risk",
-        "risk": "High Risk",
-        "risk_class": "risk-high",
-        "return_pa": "~15% p.a.",
-        "worst": "-10%",
-        "best": "+25%",
-    },
+# Captions shown below each portfolio radio option
+PORTFOLIO_CAPTIONS = [
+    "Very Low Risk · ~6% p.a. · Worst -1% / Best +10%",
+    "Low Risk · ~9% p.a. · Worst -3% / Best +15%",
+    "Moderate Risk · ~12% p.a. · Worst -7% / Best +20%",
+    "High Risk · ~15% p.a. · Worst -10% / Best +25%",
 ]
 
 INVESTMENT_HORIZON_OPTIONS = [
@@ -354,22 +318,6 @@ CUSTOM_CSS = """
 
     /* Radio spacing */
     div[data-baseweb="radio"] > div { gap: 0.2rem; }
-
-    /* ── Portfolio Preference List ── */
-    .port-list { margin: 0.5rem 0 1rem 0; }
-    .port-item {
-        margin: 0.4rem 0;
-        font-size: 0.88rem;
-        line-height: 1.5;
-        color: #1a1a2e;
-    }
-    .pt-return { font-weight: 600; color: #1a56db; }
-    .neg-val   { color: #dc2626; font-weight: 700; }
-    .pos-val   { color: #16a34a; font-weight: 700; }
-    .risk-vlow-text { color: #14532d; }
-    .risk-low-text  { color: #713f12; }
-    .risk-mod-text  { color: #7c2d12; }
-    .risk-high-text { color: #7f1d1d; }
 
     /* ── Nav button order ──
        Desktop: natural order → Previous col1 (left), Next col2 (right). ✅
