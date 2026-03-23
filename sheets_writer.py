@@ -38,7 +38,7 @@ def _build_header() -> list[str]:
         "Timestamp", "Name", "Email", "Age", "Employment Status",
         "Income Source", "Goals", "Liability Type", "Liability Followup Answer",
         "Emergency Fund", "Portfolio Preference", "Investment Horizon",
-        "Fall Reaction", "Lumpsum Amount", "SIP Amount",
+        "Fall Reaction", "Lumpsum Amount (with Infinite)", "Monthly SIP Amount (with Infinite)",
         "SIP Continuation Age", "Other Investments Value",
         # Retirement
         "Ret: Monthly Income", "Ret: Monthly Expenses",
