@@ -467,14 +467,14 @@ def _step_investment_details():
     st.markdown('<div class="section-title">Investment Details</div>', unsafe_allow_html=True)
 
     lumpsum = st.number_input(
-        "Lumpsum investment amount (Rs.)",
+        "Lumpsum amount you wish to invest with Infinite (Rs.)",
         min_value=0,
         value=None if int(ss.lumpsum_amount) == 0 else int(ss.lumpsum_amount),
         placeholder="Enter amount",
         step=10000, key="inp_lumpsum",
     )
     sip = st.number_input(
-        "Monthly SIP amount (Rs.)",
+        "Monthly SIP amount you wish to invest with Infinite (Rs.)",
         min_value=0,
         value=None if int(ss.sip_amount) == 0 else int(ss.sip_amount),
         placeholder="Enter amount",
@@ -487,6 +487,7 @@ def _step_investment_details():
         placeholder="e.g. 60",
         step=1, key="inp_sip_age",
     )
+    st.caption("By default considered until financial freedom or 60 years of age, whichever is earlier.")
     other_inv = st.text_input(
         "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.)",
         value=ss.other_investments,
