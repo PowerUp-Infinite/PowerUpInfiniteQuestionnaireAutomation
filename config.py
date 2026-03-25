@@ -216,7 +216,7 @@ CUSTOM_CSS = """
 
     /* Brand colours */
     :root {
-        --pu-blue: #1a56db;
+        --pu-blue: #35ade1;
         --pu-blue-light: #e8eefb;
         --pu-white: #ffffff;
     }
@@ -248,7 +248,7 @@ CUSTOM_CSS = """
         text-align: center;
         font-size: 1.2rem;
         font-weight: 600;
-        color: #1a56db;
+        color: #35ade1;
         letter-spacing: 1px;
         margin: 0.4rem 0 0.8rem 0;
         text-transform: uppercase;
@@ -256,11 +256,11 @@ CUSTOM_CSS = """
 
     /* Progress bar track + fill */
     .stProgress > div > div {
-        background-color: #dbeafe !important;
+        background-color: #e0f4fb !important;
         border-radius: 999px;
     }
     .stProgress > div > div > div {
-        background: linear-gradient(90deg, #1a56db, #3b82f6) !important;
+        background: linear-gradient(90deg, #35ade1, #67c9eb) !important;
         border-radius: 999px;
         transition: width 0.45s ease;
     }
@@ -276,12 +276,12 @@ CUSTOM_CSS = """
         animation: fadeInUp 0.3s ease-out;
     }
     .section-title {
-        color: #1a56db;
+        color: #35ade1;
         font-size: 1.2rem;
         font-weight: 700;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #dbeafe;
+        border-bottom: 2px solid #e0f4fb;
     }
 
     /* Education cost captions */
@@ -298,39 +298,39 @@ CUSTOM_CSS = """
         font-weight: 600;
         transition: all 0.2s ease;
         background-color: #ffffff;
-        color: #1a56db;
-        border: 1.5px solid #1a56db;
+        color: #35ade1;
+        border: 1.5px solid #35ade1;
     }
     div.stButton > button:hover {
         transform: translateY(-1px);
         box-shadow: 0 3px 10px rgba(26,86,219,0.18);
-        background-color: #eef2ff;
+        background-color: #e8f7fd;
     }
     div.stButton > button[kind="primary"] {
-        background-color: #1a56db !important;
+        background-color: #35ade1 !important;
         color: #ffffff !important;
         border: none !important;
     }
     div.stButton > button[kind="primary"]:hover {
-        background-color: #1e40af !important;
+        background-color: #2e98c6 !important;
     }
 
     /* Summary section */
     .summary-group {
         background: #f8fafc;
-        border-left: 4px solid #1a56db;
+        border-left: 4px solid #35ade1;
         padding: 1rem 1.25rem;
         margin-bottom: 1rem;
         border-radius: 0 8px 8px 0;
     }
     .summary-group h4 {
-        color: #1a56db;
+        color: #35ade1;
         margin: 0 0 0.5rem 0;
     }
 
     /* Thank-you header */
     .main-header {
-        background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #35ade1 0%, #2e98c6 100%);
         padding: 1.5rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.5rem;
