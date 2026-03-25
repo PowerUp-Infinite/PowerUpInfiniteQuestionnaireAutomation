@@ -486,8 +486,8 @@ def _step_investment_details():
         value=None if int(ss.sip_age) == 0 else int(ss.sip_age),
         placeholder="e.g. 60",
         step=1, key="inp_sip_age",
+        help="By default considered until financial freedom or 60 years of age, whichever is earlier.",
     )
-    st.caption("By default considered until financial freedom or 60 years of age, whichever is earlier.")
     other_inv = st.text_input(
         "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.)",
         value=ss.other_investments,
@@ -496,6 +496,9 @@ def _step_investment_details():
     )
 
     def _save():
+        if (lumpsum or 0) == 0 and (sip or 0) == 0:
+            st.error("Please enter at least a lumpsum amount or a monthly SIP amount.")
+            return False
         ss.lumpsum_amount = lumpsum or 0
         ss.sip_amount = sip or 0
         ss.sip_age = sip_age or 0

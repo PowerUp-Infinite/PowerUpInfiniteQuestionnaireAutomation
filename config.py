@@ -135,12 +135,12 @@ PORTFOLIO_SHORT_LABELS = [
     "High Growth",
 ]
 
-# Captions shown below each portfolio radio option
+# Captions shown below each portfolio radio option (with HTML for red/green)
 PORTFOLIO_CAPTIONS = [
-    "Very Low Risk · ~6% p.a. · Worst -1% / Best +10%",
-    "Low Risk · ~9% p.a. · Worst -3% / Best +15%",
-    "Moderate Risk · ~12% p.a. · Worst -7% / Best +20%",
-    "High Risk · ~15% p.a. · Worst -10% / Best +25%",
+    "Very Low Risk · ~6% p.a. · Worst <span style='color:#dc2626;font-weight:700;'>-1%</span> / Best <span style='color:#16a34a;font-weight:700;'>+10%</span>",
+    "Low Risk · ~9% p.a. · Worst <span style='color:#dc2626;font-weight:700;'>-3%</span> / Best <span style='color:#16a34a;font-weight:700;'>+15%</span>",
+    "Moderate Risk · ~12% p.a. · Worst <span style='color:#dc2626;font-weight:700;'>-7%</span> / Best <span style='color:#16a34a;font-weight:700;'>+20%</span>",
+    "High Risk · ~15% p.a. · Worst <span style='color:#dc2626;font-weight:700;'>-10%</span> / Best <span style='color:#16a34a;font-weight:700;'>+25%</span>",
 ]
 
 INVESTMENT_HORIZON_OPTIONS = [
@@ -266,6 +266,13 @@ CUSTOM_CSS = """
         padding-bottom: 0.5rem;
         border-bottom: 2px solid #dbeafe;
     }
+
+    /* Education cost captions */
+    .edu-caption { font-size: 0.85rem; color: #666; margin-top: -0.3rem; }
+
+    /* Red/green highlighting in portfolio captions */
+    .caption-red { color: #dc2626; font-weight: 700; }
+    .caption-green { color: #16a34a; font-weight: 700; }
 
     /* Navigation buttons */
     div.stButton > button {
