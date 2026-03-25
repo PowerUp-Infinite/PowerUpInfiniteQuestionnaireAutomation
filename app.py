@@ -557,9 +557,12 @@ def _step_goal_module(module_key: str):
             st.rerun()
     with col2:
         if st.button("Next →", use_container_width=True, key=f"btn_next_{module_key}"):
-            st.session_state[module_key] = result
-            _go_next()
-            st.rerun()
+            if module_key == "retirement" and not (result.get("monthly_expenses") or 0):
+                st.error("Please enter your current monthly expenses to proceed.")
+            else:
+                st.session_state[module_key] = result
+                _go_next()
+                st.rerun()
 
 
 # ═════════════════════════════════════════════════════════════════════════════
