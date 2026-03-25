@@ -94,22 +94,39 @@ GOALS_WITHOUT_MODULE = {"No Fixed Goal", "Wealth Conservation", "Other"}
 # ── Step 6 — Liabilities ────────────────────────────────────────────────────
 LIABILITY_OPTIONS = [
     "None",
-    "Financial Liabilities Only",
-    "Dependent Liabilities Only",
-    "Both Financial & Dependent Liabilities",
+    "Financial liabilities only",
+    "Dependent liabilities only",
+    "Both financial & dependent",
+]
+LIABILITY_CAPTIONS = [
+    "No loans or dependents",
+    "Loans/EMIs but no dependents.",
+    "People depend on your income, no loans.",
+    "Loans/EMIs and dependents rely on your income.",
 ]
 
 FORESEE_LIABILITY_OPTIONS = [
-    "No, I don't foresee any",
+    "No I don't foresee",
     "Financial liabilities only",
     "Dependent liabilities only",
-    "Both financial & dependent liabilities",
+    "Both financial & dependent",
+]
+FORESEE_LIABILITY_CAPTIONS = [
+    "I don't foresee taking any loans or having dependents in the near future.",
+    "I might take on new loans or EMIs (e.g. home, car, business, etc.)",
+    "I may have family members who will begin depending on my income.",
+    "I expect to have both new loans/EMIs and dependents relying on my income.",
 ]
 
 MANAGE_LIABILITY_OPTIONS = [
-    "Yes — fully covered without strain",
-    "Just about managing",
-    "No — struggling to service them",
+    "Yes - comfortably",
+    "Just about",
+    "No - struggling",
+]
+MANAGE_LIABILITY_CAPTIONS = [
+    "I have enough surplus, no stress.",
+    "I manage, but it's tight some months.",
+    "I often find it difficult to meet liabilities.",
 ]
 
 # ── Step 7 — Risk Profile Questions ─────────────────────────────────────────

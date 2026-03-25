@@ -13,7 +13,9 @@ from config import (
     LABEL_NAME, LABEL_EMAIL, AGE_OPTIONS,
     EMPLOYMENT_DESCRIPTIONS,
     INCOME_DESCRIPTIONS,
-    LIABILITY_OPTIONS, FORESEE_LIABILITY_OPTIONS, MANAGE_LIABILITY_OPTIONS,
+    LIABILITY_OPTIONS, LIABILITY_CAPTIONS,
+    FORESEE_LIABILITY_OPTIONS, FORESEE_LIABILITY_CAPTIONS,
+    MANAGE_LIABILITY_OPTIONS, MANAGE_LIABILITY_CAPTIONS,
     EMERGENCY_FUND_OPTIONS, PORTFOLIO_PREFERENCE_OPTIONS,
     PORTFOLIO_SHORT_LABELS, PORTFOLIO_CAPTIONS,
     INVESTMENT_HORIZON_OPTIONS, FALL_REACTION_OPTIONS, FALL_REACTION_CAPTIONS,
@@ -347,8 +349,8 @@ def _step_liabilities():
     idx = LIABILITY_OPTIONS.index(current_type) if current_type in LIABILITY_OPTIONS else None
 
     liability = st.radio(
-        "Do you currently have any liabilities?",
-        LIABILITY_OPTIONS, index=idx, key="inp_liability",
+        "What types of liabilities do you have?",
+        LIABILITY_OPTIONS, captions=LIABILITY_CAPTIONS, index=idx, key="inp_liability",
     )
 
     followup_answer = None
@@ -356,15 +358,15 @@ def _step_liabilities():
         current_fu = st.session_state.liability_followup
         fu_idx = FORESEE_LIABILITY_OPTIONS.index(current_fu) if current_fu in FORESEE_LIABILITY_OPTIONS else None
         followup_answer = st.radio(
-            "Do you foresee any liabilities in the next 2-3 years?",
-            FORESEE_LIABILITY_OPTIONS, index=fu_idx, key="inp_foresee",
+            "Do you foresee any of Financial or Dependable liability in near future? (Next 2/3 yrs)",
+            FORESEE_LIABILITY_OPTIONS, captions=FORESEE_LIABILITY_CAPTIONS, index=fu_idx, key="inp_foresee",
         )
     elif liability is not None:
         current_fu = st.session_state.liability_followup
         fu_idx = MANAGE_LIABILITY_OPTIONS.index(current_fu) if current_fu in MANAGE_LIABILITY_OPTIONS else None
         followup_answer = st.radio(
             "Can you comfortably meet your liabilities from your current income?",
-            MANAGE_LIABILITY_OPTIONS, index=fu_idx, key="inp_manage",
+            MANAGE_LIABILITY_OPTIONS, captions=MANAGE_LIABILITY_CAPTIONS, index=fu_idx, key="inp_manage",
         )
 
     def _validate():
