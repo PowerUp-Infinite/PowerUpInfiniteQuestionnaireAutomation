@@ -7,6 +7,7 @@ import base64
 from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from config import (
     APP_TITLE, CUSTOM_CSS, STEP_LABELS, HEADER_IMAGE_PATH,
@@ -411,6 +412,32 @@ def _step_risk_appetite():
         index=short_idx,
         key="inp_pp",
     )
+
+    # Colorize Worst (red) and Best (green) in portfolio captions via JS
+    components.html("""
+    <script>
+    (function() {
+        function colorize() {
+            var doc = window.parent.document;
+            doc.querySelectorAll('[data-testid="stRadio"]').forEach(function(radio) {
+                radio.querySelectorAll('*').forEach(function(el) {
+                    if (el.children.length === 0 && el.textContent.match(/Worst|Best/)) {
+                        var t = el.textContent;
+                        var c = t
+                            .replace(/(-\d+%)/g, '<span style="color:#dc2626;font-weight:700;">$1</span>')
+                            .replace(/(\+\d+%)/g, '<span style="color:#16a34a;font-weight:700;">$1</span>');
+                        if (c !== t) el.innerHTML = c;
+                    }
+                });
+            });
+        }
+        colorize();
+        new MutationObserver(colorize).observe(
+            window.parent.document.body, {childList: true, subtree: true}
+        );
+    })();
+    </script>
+    """, height=0)
 
     def _validate():
         if emergency_fund is None:
