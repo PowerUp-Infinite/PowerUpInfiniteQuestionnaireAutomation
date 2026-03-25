@@ -525,8 +525,14 @@ def _step_investment_details():
     )
 
     def _save():
-        if (lumpsum or 0) == 0 and (sip or 0) == 0:
-            st.error("Please enter at least a lumpsum amount or a monthly SIP amount.")
+        errors = []
+        if (lumpsum or 0) == 0:
+            errors.append("Please enter the lumpsum amount you wish to invest with Infinite.")
+        if (sip or 0) == 0:
+            errors.append("Please enter the monthly SIP amount you wish to invest with Infinite.")
+        if errors:
+            for e in errors:
+                st.error(e)
             return False
         ss.lumpsum_amount = lumpsum or 0
         ss.sip_amount = sip or 0
