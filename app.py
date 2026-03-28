@@ -509,13 +509,6 @@ def _step_investment_details():
         placeholder="Enter amount",
         step=1000, key="inp_sip",
     )
-    sip_age = st.number_input(
-        "Till what age do you plan to continue SIPs?",
-        min_value=0,
-        value=None if int(ss.sip_age) == 0 else int(ss.sip_age),
-        placeholder="e.g. 60",
-        step=1, key="inp_sip_age",
-    )
     other_inv = st.text_input(
         "Value of financial investments apart from mutual funds (FD, stocks, PMS, etc.)",
         value=ss.other_investments,
@@ -535,7 +528,6 @@ def _step_investment_details():
             return False
         ss.lumpsum_amount = lumpsum or 0
         ss.sip_amount = sip or 0
-        ss.sip_age = sip_age or 0
         ss.other_investments = other_inv
         return True
 
